@@ -23,7 +23,8 @@ var cflAddToCart = (productId, quantity, callback) => {
     //Finaly add form to document
     document.body.appendChild(form);
     //Send submit to add to cart
-    document.getElementById("AddToCartForm").submit();    
+    document.getElementById("AddToCartForm").submit();
+    callback(null, "Product Added to cart.")  
 }
 
 
