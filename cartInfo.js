@@ -15,7 +15,7 @@ var cflGetCart = (callback) =>{
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/cart");
     xhr.send(formData);
-    xhr.onload = function (event) {
+    xhr.onload = function (event) {        
         var parser = new DOMParser();
         var htmlDoc = parser.parseFromString(event.target.response, 'text/html');
         pList = htmlDoc.querySelectorAll(".cart__row:not(.medium-down--hide)");
@@ -47,10 +47,47 @@ var cflGetCart = (callback) =>{
             if (pPrice[0]) {
                 product.price = pPrice[0].innerHTML
             }
+            //Getting product href
+            var pHref = item.getElementsByTagName("a")
+            console.log(pHref)
+            if (pHref[0]) {
+                product.pHref = pHref[0].href
+            }
             products.push(product);
         }
         callback(null, products);
     }; 
+}
+
+function productDetail(url) {
+    //We can get the product url from image in cart. Load productDetail and get offer value. But it's being loading on real time and returns null
+    var url = "/products/kids-balance-bike?variant=4815156229"
+    var form = document.createElement("form");
+    form.method = "get";
+    form.action = url;
+    form.id = "getProduct";
+    //Finaly add form to document
+    document.body.appendChild(form);
+
+    var formData = new FormData(document.getElementById("getProduct"));
+    //Send submit to get cart
+    var product = null;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.send(formData);
+    xhr.onload = function (event) {
+        var parser = new DOMParser();
+        var htmlDoc = parser.parseFromString(event.target.response, 'text/html');
+        htmlDoc.addEventListener("DOMContentLoaded", function () { 
+            
+            htmlDoc.querySelector("#ComparePrice")
+                .addEventListener('change', function (event) {
+                    console.log(offer)            
+                })
+
+        })
+        
+    }
 }
 
 //Some tests
